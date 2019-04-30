@@ -9,7 +9,7 @@ var parser = new Readline() // make a new parser to read ASCII lines
 myPort.pipe(parser) // pipe the serial stream to the parser
 
 const server = express()
-const port = 9000
+const port = process.env.PORT | 9000
 
 // these are the definitions for the serial events:
 myPort.on('open', showPortOpen) // called when the serial port opens
@@ -66,9 +66,9 @@ io.on('connection', client => {
   })
 
   // ส่งข้อมูลไปยัง Client ทุกตัวที่เขื่อมต่อแบบ Realtime
-//   client.on('sent-message', function(message) {
-//     io.sockets.emit('new-message', message)
-//   })
+  //   client.on('sent-message', function(message) {
+  //     io.sockets.emit('new-message', message)
+  //   })
 
   client.on('sent-command', sendToSerial)
 })
