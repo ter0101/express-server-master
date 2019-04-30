@@ -3,19 +3,19 @@ import bodyParser from 'body-parser'
 import socketIO from 'socket.io'
 import SerialPort from 'serialport'
 
-var myPort = new SerialPort('COM21', 9600) // open the port
-var Readline = SerialPort.parsers.Readline // make instance of Readline parser
-var parser = new Readline() // make a new parser to read ASCII lines
-myPort.pipe(parser) // pipe the serial stream to the parser
+// var myPort = new SerialPort('COM21', 9600) // open the port
+// var Readline = SerialPort.parsers.Readline // make instance of Readline parser
+// var parser = new Readline() // make a new parser to read ASCII lines
+// myPort.pipe(parser) // pipe the serial stream to the parser
 
 const server = express()
 const port = process.env.PORT | 9000
 
 // these are the definitions for the serial events:
-myPort.on('open', showPortOpen) // called when the serial port opens
-myPort.on('close', showPortClose) // called when the serial port closes
-myPort.on('error', showError) // called when there's an error with the serial port
-parser.on('data', readSerialData) // called when there's new data incoming
+// myPort.on('open', showPortOpen) // called when the serial port opens
+// myPort.on('close', showPortClose) // called when the serial port closes
+// myPort.on('error', showError) // called when there's an error with the serial port
+// parser.on('data', readSerialData) // called when there's new data incoming
 
 // ------------------------ Serial event functions:
 // this is called when the serial port is opened:
@@ -65,10 +65,10 @@ io.on('connection', client => {
     console.log('user disconnected')
   })
 
-  // ส่งข้อมูลไปยัง Client ทุกตัวที่เขื่อมต่อแบบ Realtime
-  //   client.on('sent-message', function(message) {
-  //     io.sockets.emit('new-message', message)
-  //   })
+  //ส่งข้อมูลไปยัง Client ทุกตัวที่เขื่อมต่อแบบ Realtime
+  client.on('sent-message', function(message) {
+    io.sockets.emit('new-message', message)
+  })
 
   client.on('sent-command', sendToSerial)
 })
